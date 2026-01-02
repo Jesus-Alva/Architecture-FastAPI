@@ -1,5 +1,26 @@
-#Actualizar estructura del proyecto ejecuta
+# Actualizar estructura del proyecto ejecuta
 tree /f > estructura.txt
+
+## Instalacion de NEXT.JS
+# Asegúrate de tener Node.js instalado en tu sistema
+npx create-next-app@latest frontend --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
+
+# O si prefieres la configuración mínima:
+npx create-next-app@latest frontend --yes
+
+ Los flags significan:
+--typescript: Habilita TypeScript
+
+--tailwind: Instala Tailwind CSS
+
+--eslint: Configura ESLint
+
+--app: Usa el App Router (nuevo en Next.js 13+)
+
+--src-dir: Usa carpeta src/ para el código
+
+--import-alias "@/*": Configura alias de imports
+
 
 # Construir y levantar todos los servicios
 docker-compose up --build
