@@ -7,10 +7,8 @@ services:
     container_name: fastapi-web
     ports:
       - "8000:8000"
-    # depends_on:
-    #   - postgres
-    #   - redis
-    #   - rabbitmq
+    depends_on:
+      - postgres
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/dbname
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
@@ -20,6 +18,14 @@ services:
     volumes:
       - ./backend:/app
     restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # worker:
   #   build:
@@ -77,7 +83,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      #target: dev  # Cambia a 'runner' para producción
     container_name: nextjs-frontend
     ports:
       - "3000:3000"
@@ -86,12 +91,15 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
-      - /app/node_modules  # Para evitar sobrescribir node_modules
-      - /app/.next        # Cache de Next.js
-    command: npm run dev -- --webpack
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
     restart: unless-stopped
     depends_on:
-      - web
+      web:
+        condition: service_healthy
+    networks:
+      - app-network
 
   # Database & Infrastructure Services
   postgres:
@@ -106,21 +114,47 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: redis-cache
-  #   ports:
-  #     - "6379:6379"
-  #   restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq-broker
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   restart: unless-stopped
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-broker
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,16 +1,25 @@
-export const metadata = {
-  title: 'Mi App FastAPI + Next.js',
-  description: 'Aplicación fullstack con FastAPI y Next.js',
+// app/layout.tsx
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'Base Architecture',
+  description: 'Proyecto que incluye la arquitectura basica para reutilización en los aplicativos',
 }
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   )
 }
