@@ -1,0 +1,7 @@
+Esta ruta almacena todo el contenido media que se utiliza
+
+Pueden ser: 
+-Imagenes
+-SVG
+-Videos
+-Audios
