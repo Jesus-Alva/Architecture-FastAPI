@@ -204,32 +204,6 @@ export function useTheme() {
 }
 ```
 
-## 📁 Estructura de Carpetas Recomendada
-
-
-```
-my-next-app/
-├── app/                    # App Router (Next.js 13+)
-│   ├── layout.tsx         # Layout principal
-│   ├── page.tsx           # Homepage
-│   ├── globals.css        # Estilos globales
-│   └── [ruta]/
-│       ├── layout.tsx     # Layout específico
-│       ├── page.tsx       # Página dinámica
-│       └── loading.tsx    # Estado de carga
-│
-├── components/            # Componentes reutilizables
-│   ├── ui/               # Botones, inputs, etc.
-│   ├── layout/           # Componentes de layout
-│   └── features/         # Componentes específicos
-│
-├── lib/                  # Utilidades y configuraciones
-├── hooks/                # Custom hooks
-├── types/                # Tipos TypeScript
-├── styles/               # Estilos adicionales
-└── public/               # Assets estáticos
-```
-
 ## 📋 Consejos de Estructuración
 ```
 Sección	        Orden Recomendada
@@ -261,30 +235,32 @@ cd ..
 docker compose up --build
 ```
 
+## 📁 Estructura de Carpetas Recomendada
 
-## Problemas con AOS
-Si al levantar nuestros servicios nos sale el siguiente error
-```
-9.636   Try `npm i --save-dev @types/aos` if it exists or add a new declaration (.d.ts) file containing `declare module 'aos';`
-9.636 
-9.636   3 |
-9.636   4 | import { useEffect } from 'react';
-9.636 > 5 | import AOS from 'aos';
-9.636     |                 ^
-9.636   6 | import 'aos/dist/aos.css';
-9.636   7 |
-9.636   8 | export default function AOSInit() {
-9.658 Next.js build worker exited with code: 1 and signal: null
-```
-ESto sugiere un error de instalacion de AOS, para ello se modifico el archivo ./frontend/Dockerfile para forzar la instalcion, si esto no funciona se ejecuta una instalacion local con los comandos:
-```
-# Instalar localmente (fuera de Docker)
-cd frontend
-npm install --save-dev @types/aos
 
-# Verificar que se instaló
-ls node_modules/@types/aos
 ```
+my-next-app/
+├── app/                    # App Router (Next.js 13+)
+│   ├── layout.tsx         # Layout principal
+│   ├── page.tsx           # Homepage
+│   ├── globals.css        # Estilos globales
+│   └── [ruta]/
+│       ├── layout.tsx     # Layout específico
+│       ├── page.tsx       # Página dinámica
+│       └── loading.tsx    # Estado de carga
+│
+├── components/            # Componentes reutilizables
+│   ├── ui/               # Botones, inputs, etc.
+│   ├── layout/           # Componentes de layout
+│   └── features/         # Componentes específicos
+│
+├── lib/                  # Utilidades y configuraciones
+├── hooks/                # Custom hooks
+├── types/                # Tipos TypeScript
+├── styles/               # Estilos adicionales
+└── public/               # Assets estáticos
+```
+
 
 
 

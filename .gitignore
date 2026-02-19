@@ -90,6 +90,7 @@ celerybeat.pid
 
 # Dependencies
 node_modules/
+frontend/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -97,9 +98,11 @@ node_modules/
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+fontend/.env/
 
 # Next.js
 /.next/
+frontend/.next/
 /out/
 /next-env.d.ts
 
