@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000
 
 # Comando para desarrollo
-CMD ["npm", "run", "dev"]
+CMD ["next", "dev", "-H", "0.0.0.0"]
